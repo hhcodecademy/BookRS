@@ -10,5 +10,8 @@ namespace BookRS.DAL.Interfaces
     public interface ICategoryRepository
     {
         public Category AddCategory(Category obj);
+        public List<Category> GetCategories();
+        public Category GetCategoryById(int id);
+
     }
 }

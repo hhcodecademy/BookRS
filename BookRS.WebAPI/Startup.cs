@@ -1,4 +1,6 @@
 using BookRS.DAL.Data;
+using BookRS.DAL.Interfaces;
+using BookRS.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +36,7 @@ namespace BookRS.WebAPI
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
 
             });
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

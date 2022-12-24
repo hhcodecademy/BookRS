@@ -24,5 +24,17 @@ namespace BookRS.DAL.Repositories
             _dbContext.SaveChanges();
             return obj;
         }
+
+        public List<Category> GetCategories()
+        {
+            var categories = _dbContext.Categories.ToList();
+            return categories;
+        }
+
+        public Category GetCategoryById(int id)
+        {
+            var category = _dbContext.Categories.Find(id);
+            return category;
+        }
     }
 }
