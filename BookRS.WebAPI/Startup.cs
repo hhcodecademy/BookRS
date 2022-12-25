@@ -34,9 +34,14 @@ namespace BookRS.WebAPI
             services.AddDbContext<AppDbContext>(opts =>
             {
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
+                opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
             });
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IStoreRepository, StoreRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+       
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

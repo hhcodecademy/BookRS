@@ -25,6 +25,8 @@ namespace BookRS.DAL.Repositories
             return obj;
         }
 
+  
+
         public List<Category> GetCategories()
         {
             var categories = _dbContext.Categories.ToList();
@@ -35,6 +37,24 @@ namespace BookRS.DAL.Repositories
         {
             var category = _dbContext.Categories.Find(id);
             return category;
+        }
+
+        public Category UpdateCategory(Category category)
+        {
+            var dbCategory = _dbContext.Categories.Find(category.Id);
+        
+            dbCategory.Description = category.Description;
+            dbCategory.UpdateDate = DateTime.Now;
+            _dbContext.Categories.Update(category);
+            _dbContext.SaveChanges();
+            return category;
+        }
+
+        public void DeleteCategory(int id)
+        {
+            var dbCategory = _dbContext.Categories.Find(id);
+            _dbContext.Categories.Remove(dbCategory);
+            _dbContext.SaveChanges();
         }
     }
 }

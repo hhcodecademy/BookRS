@@ -11,23 +11,24 @@ namespace BookRS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class StoreController : ControllerBase
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoriesController(ICategoryRepository categoryRepository)
+        private readonly IStoreRepository _storeRepository;
+
+        public StoreController(IStoreRepository storeRepository)
         {
-            _categoryRepository = categoryRepository;
+            _storeRepository = storeRepository;
         }
 
 
         [HttpGet]
-        public List<Category> GetCategories()
+        public List<Store> GetStores()
         {
-            var response = _categoryRepository.GetCategories();
+            var response = _storeRepository.GetStores();
             return response;
         }
         [HttpGet("{id:int}")]
-        public ActionResult<Category> GetCategoryById(int id)
+        public ActionResult<Store> GetStoreById(int id)
 
         {
             if (id == 0)
@@ -35,7 +36,7 @@ namespace BookRS.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var response = _categoryRepository.GetCategoryById(id);
+            var response = _storeRepository.GetStoreById(id);
             if (response == null)
             {
                 return NotFound();
@@ -45,44 +46,46 @@ namespace BookRS.WebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Category> Create(Category category)
+        public ActionResult<Store> Create(Store store)
         {
 
-            var response = _categoryRepository.AddCategory(category);
+            var response = _storeRepository.AddStore(store);
             return Ok(response);
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<Category> Update(int id,[FromBody] Category obj) {
-            if (id == 0 || id!= obj.Id)
+        public ActionResult<Store> Update(int id, [FromBody] Store obj)
+        {
+            if (id == 0 || id != obj.Id)
             {
                 return BadRequest();
             }
 
-            var response = _categoryRepository.GetCategoryById(id);
+            var response = _storeRepository.GetStoreById(id);
             if (response == null)
             {
                 return NotFound();
             }
-             response = _categoryRepository.UpdateCategory(obj);
-             return Ok(response); ;
+            response = _storeRepository.UpdateStore(obj);
+            return Ok(response); ;
         }
 
         [HttpDelete("{id:int}")]
 
-        public IActionResult Delete(int id) {
-            if (id == 0 )
+        public IActionResult Delete(int id)
+        {
+            if (id == 0)
             {
                 return BadRequest();
             }
 
-            var response = _categoryRepository.GetCategoryById(id);
+            var response = _storeRepository.GetStoreById(id);
             if (response == null)
             {
                 return NotFound();
             }
 
-            _categoryRepository.DeleteCategory(id);
+            _storeRepository.DeleteStore(id);
             return NoContent();
         }
     }

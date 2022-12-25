@@ -28,7 +28,6 @@ namespace BookRS.WebUI
             services.AddDbContext<AppDbContext>(opts =>
             {
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
-
             });
             services.AddControllersWithViews();
         }

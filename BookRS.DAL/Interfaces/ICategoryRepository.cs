@@ -12,6 +12,10 @@ namespace BookRS.DAL.Interfaces
         public Category AddCategory(Category obj);
         public List<Category> GetCategories();
         public Category GetCategoryById(int id);
+        public Category UpdateCategory(Category category);
+
+        public void DeleteCategory(int id);
+
 
     }
 }
