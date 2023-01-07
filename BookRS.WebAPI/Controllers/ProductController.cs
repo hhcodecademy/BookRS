@@ -1,5 +1,6 @@
 ﻿using BookRS.DAL.DBModels;
 using BookRS.DAL.Interfaces;
+using BookRS.WebAPI.Logging.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,9 +15,11 @@ namespace BookRS.WebAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _repository;
-        public ProductController(IProductRepository repository)
+        private readonly ICustomLogger _logger;
+        public ProductController(IProductRepository repository, ICustomLogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
 
@@ -32,15 +35,19 @@ namespace BookRS.WebAPI.Controllers
         {
             if (id == 0)
             {
+                _logger.Log("Sifir gelidiyi ucun xeta oldu", "error");
                 return BadRequest();
             }
 
             var response = _repository.GetById(id);
             if (response == null)
             {
+
+                _logger.Log($"Uygun {id} id gelmediyi ucun xeta oldu", "error");
                 return NotFound();
             }
 
+            _logger.Log($"Geri {id} idli mehsul donmusdur");
             return Ok(response);
         }
 

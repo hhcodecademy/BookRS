@@ -1,6 +1,8 @@
 using BookRS.DAL.Data;
 using BookRS.DAL.Interfaces;
 using BookRS.DAL.Repositories;
+using BookRS.WebAPI.Logging;
+using BookRS.WebAPI.Logging.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +34,11 @@ namespace BookRS.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Error().WriteTo.Console()
+                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
             services.AddDbContext<AppDbContext>(opts =>
             {
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
@@ -41,7 +49,7 @@ namespace BookRS.WebAPI
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-       
+            services.AddScoped<ICustomLogger, CustomLoggerV2>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
